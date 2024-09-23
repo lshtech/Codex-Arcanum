@@ -30,7 +30,7 @@ function CodexArcanum.Alchemical:new(name, slug, config, pos, loc_txt, cost, dis
       y = 0
   }
   o.cost = cost
-  o.discovered = discovered or false
+  o.discovered = false
   o.unlocked = unlocked
   o.consumeable = true
   o.unlock_condition = unlock_condition or {}
@@ -70,6 +70,9 @@ function CodexArcanum.Alchemical:register()
 
  	G.P_CENTERS[self.slug] = alchemical_obj
 	table.insert(G.P_CENTER_POOLS['Alchemical'], alchemical_obj)
+	if not alchemical_obj.unlcocked then
+		table.insert(G.P_LOCKED, alchemical_obj)
+	end
 
   	G.localization.descriptions["Alchemical"][self.slug] = self.loc_txt
 

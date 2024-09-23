@@ -2,8 +2,8 @@
 -- BOOSTER API
 ------------------------------------
 
-SMODS.Boosters = {}
-SMODS.Booster = {
+SMODS.CABoosters = {}
+SMODS.CABooster = {
   	name = "",
   	slug = "",
 	cost = 4,
@@ -15,7 +15,7 @@ SMODS.Booster = {
     atlas = 'Booster'
 }
 
-function SMODS.Booster:new(name, slug, config, pos, cost, discovered, weight, kind, atlas)
+function SMODS.CABooster:new(name, slug, config, pos, cost, discovered, weight, kind, atlas)
     o = {}
     setmetatable(o, self)
     self.__index = self
@@ -28,15 +28,15 @@ function SMODS.Booster:new(name, slug, config, pos, cost, discovered, weight, ki
         y = 0
     }
     o.cost = cost
-    o.discovered = discovered or false
+    o.discovered = false
     o.weight = weight or 1
 	o.kind = kind or 'Standard'
 	o.atlas = atlas or 'Booster'
 	return o
 end
 
-function SMODS.Booster:register()
-	SMODS.Boosters[self.slug] = self
+function SMODS.CABooster:register()
+	SMODS.CABoosters[self.slug] = self
 
 	local minId = table_length(G.P_CENTER_POOLS['Booster']) + 1
     local id = 0

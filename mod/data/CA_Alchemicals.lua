@@ -111,7 +111,10 @@ function CodexArcanum.INIT.CA_Alchemicals()
 
     function CodexArcanum.Alchemicals.c_alchemy_aero.use(card, area, copier)
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-            G.FUNCS.draw_from_deck_to_hand(card.ability.extra)
+            --G.FUNCS.draw_from_deck_to_hand(card.ability.extra)
+            for i = 1, card.ability.extra do
+                draw_card(G.deck,G.hand, 100,'up', true)
+            end
         return true end }))
     end
 
@@ -286,7 +289,7 @@ function CodexArcanum.INIT.CA_Alchemicals()
     alchemy_arsenic:register()
             
     function CodexArcanum.Alchemicals.c_alchemy_arsenic.can_use(card)
-        return true
+        return G.GAME.current_round.discards_left ~= 0
     end
 
     function CodexArcanum.Alchemicals.c_alchemy_arsenic.use(card, area, copier)

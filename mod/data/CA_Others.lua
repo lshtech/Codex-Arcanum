@@ -87,11 +87,11 @@ function CodexArcanum.INIT.CA_Others()
     }
         }
         
-        local tag_elemental = SMODS.Tag:new("Elemental Tag", "elemental", {type = 'new_blind_choice'}, { x = 0, y = 0 }, tag_elemental_def)
+        local tag_elemental = SMODS.CATag:new("Elemental Tag", "elemental", {type = 'new_blind_choice'}, { x = 0, y = 0 }, tag_elemental_def)
         SMODS.Sprite:new("tag_elemental", CodexArcanum.mod.path, "tag_elemental.png", 34, 34, "asset_atli"):register();
         tag_elemental:register()
 
-        function SMODS.Tags.tag_elemental.apply(tag, context)
+        function SMODS.CATags.tag_elemental.apply(tag, context)
             if context.type == 'new_blind_choice' then 
                 local lock = tag.ID
                 G.CONTROLLER.locks[lock] = true

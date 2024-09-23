@@ -2,8 +2,8 @@
 -- TAGS API
 ------------------------------------
 
-SMODS.Tags = {}
-SMODS.Tag = {
+SMODS.CATags = {}
+SMODS.CATag = {
 	name = "",
 	slug = "",
 	config = {},
@@ -13,7 +13,7 @@ SMODS.Tag = {
 	min_ante = nil
 }
 
-function SMODS.Tag:new(name, slug, config, pos, loc_txt, min_ante, discovered, atlas)
+function SMODS.CATag:new(name, slug, config, pos, loc_txt, min_ante, discovered, atlas)
 	o = {}
 	setmetatable(o, self)
 	self.__index = self
@@ -34,8 +34,8 @@ function SMODS.Tag:new(name, slug, config, pos, loc_txt, min_ante, discovered, a
 	return o
 end
 
-function SMODS.Tag:register()
-	SMODS.Tags[self.slug] = self
+function SMODS.CATag:register()
+	SMODS.CATags[self.slug] = self
 	local minId = table_length(G.P_CENTER_POOLS['Tag']) + 1
 	local id = 0
 	local i = 0
@@ -189,7 +189,7 @@ function Tag:apply_to_run(_context)
 	local ret_val = apply_to_runref(self, _context)
 	if not self.triggered and self.config.type == _context.type then
 		local key = self.key
-        local tag_obj = SMODS.Tags[key]
+        local tag_obj = SMODS.CATags[key]
         if tag_obj and tag_obj.apply and type(tag_obj.apply) == "function" then
             local o = tag_obj.apply(self, _context)
             if o then return o end
@@ -210,10 +210,10 @@ function save_tags()
         v.key = k
         if not v.wip and not v.demo then
             if TESTHELPER_unlocks then
-                v.discovered = true;
+                v.discovered = false;
             end                                                                   --REMOVE THIS
             if not v.discovered and meta.discovered[k] then
-                v.discovered = true
+                v.discovered = false
             end
         end
     end
@@ -244,7 +244,7 @@ function CodexArcanum.INIT.TagAPI()
     for k, v in pairs(G.P_CENTERS) do
         if not v.wip and not v.demo then
             if TESTHELPER_unlocks then
-                v.unlocked = true; v.discovered = true; v.alerted = true
+                v.unlocked = true; v.discovered = false; v.alerted = true
             end --REMOVE THIS
             if not v.unlocked and (string.find(k, '^j_') or string.find(k, '^b_') or string.find(k, '^v_') or string.find(k, '^c_')) and meta.unlocked[k] then
                 v.unlocked = true
@@ -254,7 +254,7 @@ function CodexArcanum.INIT.TagAPI()
                     v
             end
             if not v.discovered and (string.find(k, '^j_') or string.find(k, '^b_') or string.find(k, '^e_') or string.find(k, '^c_') or string.find(k, '^p_') or string.find(k, '^v_')) and meta.discovered[k] then
-                v.discovered = true
+                v.discovered = false
             end
             if v.discovered and meta.alerted[k] or v.set == 'Back' or v.start_alerted then
                 v.alerted = true
@@ -267,9 +267,9 @@ function CodexArcanum.INIT.TagAPI()
 	for k, v in pairs(G.P_BLINDS) do
         v.key = k
         if not v.wip and not v.demo then 
-            if TESTHELPER_unlocks then v.discovered = true; v.alerted = true  end --REMOVE THIS
+            if TESTHELPER_unlocks then v.discovered = false; v.alerted = true  end --REMOVE THIS
             if not v.discovered and meta.discovered[k] then 
-                v.discovered = true
+                v.discovered = false
             end
             if v.discovered and meta.alerted[k] then 
                 v.alerted = true
@@ -283,10 +283,10 @@ function CodexArcanum.INIT.TagAPI()
         v.key = k
         if not v.wip and not v.demo then
             if TESTHELPER_unlocks then
-                v.discovered = true; v.alerted = true
+                v.discovered = false; v.alerted = true
             end                                                                   --REMOVE THIS
             if not v.discovered and meta.discovered[k] then
-                v.discovered = true
+                v.discovered = false
             end
             if v.discovered and meta.alerted[k] then
                 v.alerted = true

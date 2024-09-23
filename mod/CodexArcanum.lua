@@ -4,7 +4,7 @@
 --- MOD_AUTHOR: [itayfeder]
 --- MOD_DESCRIPTION: Adds a new set of cards: Alchemy!
 --- BADGE_COLOUR: C09D75
---- PRIORITY: -100
+--- PRIORITY: -2
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
@@ -21,14 +21,50 @@ CodexArcanum = {}
 CodexArcanum.mod_id = 'CodexArcanum'
 CodexArcanum.INIT = {}
 
-local create_UIBox_your_collectionref = create_UIBox_your_collection
-function create_UIBox_your_collection()
-    local retval = create_UIBox_your_collectionref()
-    table.insert(retval.nodes[1].nodes[1].nodes[1].nodes[1].nodes[4].nodes[2].nodes, UIBox_button({
-        button = 'your_collection_alchemicals', label = { "Alchemical Cards" }, count = G.DISCOVER_TALLIES.alchemicals, minw = 4, id = 'your_collection_alchemicals', colour = G.C.SECONDARY_SET.Alchemy
-    }))
-    return retval
-end
+SMODS.Atlas({ key = "alchemicals", atlas_table = "ASSET_ATLAS", path = "alchemical_atlas.png", px = 71, py = 95})
+
+SMODS.UndiscoveredSprite {
+    key = 'Alchemical',
+    atlas = 'alchemicals',
+    pos = {x = 0, y = 2}
+}
+
+SMODS.ConsumableType {
+  key = 'Alchemical',
+  primary_colour = G.C.SECONDARY_SET.Alchemy,
+  secondary_colour = G.C.SECONDARY_SET.Alchemy,
+  loc_txt = {
+      name = 'Alchemical Cards',
+      collection = 'Alchemical Cards',
+      undiscovered = {
+        name = "Not Discovered",
+        text = {
+          "Purchase or use",
+                  "this card in an",
+                  "unseeded run to",
+                  "learn what it does"
+        },
+  },
+  },
+  collection_rows = { 6, 6 },
+  shop_rate = 2,
+  rarities = {
+      {key = 'Common', rate = 75},
+      {key = 'Uncommon', rate = 20},
+      {key = 'Rare', rate = 4},
+      {key = 'Legendary', rate = 1},
+  },
+  default = "c_ca_extra"
+}
+
+--local create_UIBox_your_collectionref = create_UIBox_your_collection
+--function create_UIBox_your_collection()
+--    local retval = create_UIBox_your_collectionref()
+--    table.insert(retval.nodes[1].nodes[1].nodes[1].nodes[1].nodes[4].nodes[2].nodes, UIBox_button({
+--        button = 'your_collection_alchemicals', label = { "Alchemical Cards" }, count = G.DISCOVER_TALLIES.alchemicals, minw = 4, id = 'your_collection_alchemicals', colour = G.C.SECONDARY_SET.Alchemy
+--    }))
+--    return retval
+--end
 
 function SMODS.INIT.CodexArcanum()
 

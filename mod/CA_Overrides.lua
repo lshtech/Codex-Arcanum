@@ -379,12 +379,15 @@ function Card:use_consumeable(area, copier)
               card:add_to_deck()
               G.consumeables:emplace(card)
               G.GAME.consumeable_buffer = 0
-              return true end }))   
+              return true end }))
       return true end)}))
     end
   else
     local key = self.config.center.key
     local center_obj = CodexArcanum.Alchemicals[key]
+    if center_obj then
+      print(tostring(key) .. " | " .. tostring(center_obj.name))
+    end
     if center_obj and center_obj.use and type(center_obj.use) == 'function' then
       stop_use()
       if not copier then set_consumeable_usage(self) end
@@ -563,8 +566,10 @@ function Game:update_round_eval(dt)
   end
   
   for k, card in ipairs(G.playing_cards) do
-    if card.ability.extra and card.ability.extra.oil then
-      card.ability.extra.oil = nil
+    if type(card.ability.extra) ~= "number" then
+        if card.ability.extra and card.ability.extra.oil then
+          card.ability.extra.oil = nil
+      end
     end
   end
 
@@ -924,7 +929,7 @@ function Game:init_item_prototypes()
   G.P_CENTER_POOLS.Alchemical = {}
   G.localization.descriptions.Alchemical = {}
 
-  for _, booster in pairs(SMODS.Boosters) do
+  for _, booster in pairs(SMODS.CABoosters) do
     booster:register()
   end
 
@@ -932,7 +937,7 @@ function Game:init_item_prototypes()
     alchemical:register()
   end
 
-  for _, tag in pairs(SMODS.Tags) do
+  for _, tag in pairs(SMODS.CATags) do
     tag:register()
   end
   SMODS.LOAD_LOC()
@@ -1168,7 +1173,7 @@ function ALCHEMICAL_SAVE_UNLOCKS()
   for k, v in pairs(G.P_CENTERS) do
       if not v.wip and not v.demo then
           if TESTHELPER_unlocks then
-              v.unlocked = true; v.discovered = true; v.alerted = true
+              v.unlocked = true; v.discovered = false; v.alerted = true
           end --REMOVE THIS
           if not v.unlocked and (string.find(k, '^j_') or string.find(k, '^b_') or string.find(k, '^v_')) or string.find(k, '^c_') and meta.unlocked[k] then
               v.unlocked = true
@@ -1178,7 +1183,7 @@ function ALCHEMICAL_SAVE_UNLOCKS()
                   v
           end
           if not v.discovered and (string.find(k, '^j_') or string.find(k, '^b_') or string.find(k, '^e_') or string.find(k, '^c_') or string.find(k, '^p_') or string.find(k, '^v_')) and meta.discovered[k] then
-              v.discovered = true
+              v.discovered = false
           end
           if v.discovered and meta.alerted[k] or v.set == 'Back' or v.start_alerted then
               v.alerted = true
@@ -1191,9 +1196,9 @@ function ALCHEMICAL_SAVE_UNLOCKS()
   for k, v in pairs(G.P_BLINDS) do
       v.key = k
       if not v.wip and not v.demo then 
-          if TESTHELPER_unlocks then v.discovered = true; v.alerted = true  end --REMOVE THIS
+          if TESTHELPER_unlocks then v.discovered = false; v.alerted = true  end --REMOVE THIS
           if not v.discovered and meta.discovered[k] then 
-              v.discovered = true
+              v.discovered = false
           end
           if v.discovered and meta.alerted[k] then 
               v.alerted = true
@@ -1207,10 +1212,10 @@ function ALCHEMICAL_SAVE_UNLOCKS()
       v.key = k
       if not v.wip and not v.demo then
           if TESTHELPER_unlocks then
-              v.discovered = true; v.alerted = true
+              v.discovered = false; v.alerted = true
           end                                                                   --REMOVE THIS
           if not v.discovered and meta.discovered[k] then
-              v.discovered = true
+              v.discovered = false
           end
           if v.discovered and meta.alerted[k] then
               v.alerted = true
@@ -1226,31 +1231,20 @@ local check_for_unlockref = check_for_unlock
 function check_for_unlock(args)
   if not next(args) then return end
   if G.GAME.seeded then return end
-
-  local alchemicals_count = 0
-  for k, v in pairs(G.GAME.consumeable_usage) do
-    if v.set == 'Alchemical' then alchemicals_count = alchemicals_count + 1 end
-  end
-
-  local i=1
-  while i <= #G.P_LOCKED do
-    local ret = false
-    local card = G.P_LOCKED[i]
-
-    if not card.unlocked and card.unlock_condition and card.unlock_condition.type == args.type then
-      if args.type == 'used_alchemical' and alchemicals_count >= card.unlock_condition.extra then
-        ret = true
-        unlock_card(card)
+  
+  local card1 = G.P_CENTERS["c_alchemy_uranium"]
+  if card1 and not card1.unlocked then
+      local alchemicals_count = 0
+      for k, v in pairs(G.GAME.consumeable_usage) do
+        if v.set == 'Alchemical' then alchemicals_count = alchemicals_count + v.count end
       end
-    end
 
-    if ret == true then
-      table.remove(G.P_LOCKED, i)
-    else
-        i = i + 1
-    end
+      if args.type == 'used_alchemical' and alchemicals_count >= card1.unlock_condition.extra then
+        unlock_card(card1)
+      end
   end
 
+  return check_for_unlockref(args)
 end
 
 local blind_debuff_cardref = Blind.debuff_card
