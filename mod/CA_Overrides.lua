@@ -385,9 +385,6 @@ function Card:use_consumeable(area, copier)
   else
     local key = self.config.center.key
     local center_obj = CodexArcanum.Alchemicals[key]
-    if center_obj then
-      print(tostring(key) .. " | " .. tostring(center_obj.name))
-    end
     if center_obj and center_obj.use and type(center_obj.use) == 'function' then
       stop_use()
       if not copier then set_consumeable_usage(self) end
