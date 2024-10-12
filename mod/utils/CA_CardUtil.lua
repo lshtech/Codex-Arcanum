@@ -1,5 +1,5 @@
 function create_alchemical() 
-    local card = create_card("Alchemical", G.pack_cards, nil, nil, true, true, nil, 'alc')
+    local card = create_card_alchemy("Alchemical", G.pack_cards, nil, nil, true, true, nil, 'alc')
     return card
 end
 

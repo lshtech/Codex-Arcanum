@@ -139,7 +139,7 @@ function CodexArcanum.INIT.CA_Others()
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             if G.consumeables.config.card_limit > #G.consumeables.cards then
                 play_sound('timpani')
-                local card = create_card('Alchemical', G.consumeables, nil, nil, nil, nil, nil, 'see')
+                local card = create_card_alchemy('Alchemical', G.consumeables, nil, nil, nil, nil, nil, 'see')
                 card:add_to_deck()
                 G.consumeables:emplace(card)
                 used_tarot:juice_up(0.3, 0.5)

@@ -187,7 +187,7 @@ function CodexArcanum.INIT.CA_Jokers()
     local shock_humor_def = {
         name = "Shock Humor",
         text = {
-            "{C:green}#1# in #2#{} chance to",
+            "{C:green}1 in 5{} chance to",
             "get an {C:alchemical}Alchemical{} card",
             "when you discard a {C:attention}Gold{},",
             "{C:attention}Steel{} or {C:attention}Stone{} card"
@@ -198,22 +198,21 @@ function CodexArcanum.INIT.CA_Jokers()
     shock_humor:register()
     
     function SMODS.Jokers.j_shock_humor.loc_def(card)
-        return {''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds}
+        return {G.GAME.probabilities.normal, card.ability.extra.odds}
     end
 
     function SMODS.Jokers.j_shock_humor.calculate(card, context)
         if context.discard and not context.other_card.debuff then
-        if context.other_card.config.center == G.P_CENTERS.m_steel or context.other_card.config.center == G.P_CENTERS.m_gold or
-        context.other_card.config.center == G.P_CENTERS.m_stone then
-            if pseudorandom('shock_humor') < G.GAME.probabilities.normal/card.ability.extra.odds then
-            add_random_alchemical(card)
-            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('p_plus_alchemical'), colour = G.C.SECONDARY_SET.Alchemy})
+            if context.other_card.config.center == G.P_CENTERS.m_steel or context.other_card.config.center == G.P_CENTERS.m_gold or
+            context.other_card.config.center == G.P_CENTERS.m_stone then
+                if pseudorandom('shock_humor') < G.GAME.probabilities.normal/card.ability.extra.odds then
+                add_random_alchemical(card)
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('p_plus_alchemical'), colour = G.C.SECONDARY_SET.Alchemy})
+                end
             end
-        end
         end
     end
     
-
     -- Breaking Bozo
     local breaking_bozo_def = {
         name = "Breaking Bozo",

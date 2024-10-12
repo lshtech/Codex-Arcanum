@@ -10,8 +10,7 @@ function get_type_colour(_c, card)
   return fromRef
 end
 
-local create_cardref = create_card
-function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+function create_card_alchemy(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 
   if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
     if (_type == 'Alchemical' or _type == 'Spectral') and
@@ -22,7 +21,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     end
   end
 
-  local card = create_cardref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+  local card = create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 
   if G.GAME.used_vouchers.v_cauldron and pseudorandom('cauldron') > 0.5 and _type == "Alchemical" then
     card:set_edition({negative = true}, true)
@@ -69,7 +68,7 @@ function create_card_for_shop(area)
           {type = 'Spectral', val = G.GAME.spectral_rate},
         }) do
           if polled_rate > check_rate and polled_rate <= check_rate + v.val then
-            local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')
+            local card = create_card_alchemy(v.type, area, nil, nil, nil, nil, nil, 'sho')
             create_shop_card_ui(card, v.type, area)
             G.E_MANAGER:add_event(Event({
                 func = (function()
@@ -189,7 +188,7 @@ function get_current_pool(_type, _rarity, _legendary, _append)
 end
 
 local generate_card_uiref = generate_card_ui
-function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end)
+function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
   if _c.set == "Alchemical" or (_c.set == 'Booster' and _c.name:find("Alchemy")) or _c.name == 'Shock Humor' then
     local first_pass = nil
     if not full_UI_table then 
@@ -321,7 +320,7 @@ function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, h
     return full_UI_table
   end
   
-  return generate_card_uiref(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end)
+  return generate_card_uiref(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
 end
 
 local set_spritesref = Card.set_sprites
