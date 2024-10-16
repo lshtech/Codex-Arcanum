@@ -96,7 +96,7 @@ function SMODS.INIT.CodexArcanum()
   SMODS.LOAD_LOC()
   SMODS.SAVE_UNLOCKS()
   ALCHEMICAL_SAVE_UNLOCKS()
-  save_tags()
+  --save_tags()
 
 end
 
