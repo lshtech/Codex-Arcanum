@@ -939,7 +939,7 @@ function Game:init_item_prototypes()
   SMODS.LOAD_LOC()
   SMODS.SAVE_UNLOCKS()
   ALCHEMICAL_SAVE_UNLOCKS()
-  save_tags()
+  --save_tags()
 end
 
 
