@@ -220,8 +220,8 @@ function CodexArcanum.INIT.CA_Jokers()
             "After you use an {C:alchemical}Alchemical{}",
             "card, do one at random: ",
             "- Reduce blind by {C:attention}10%{}",
-            "- Draw {C:attention}4{} cards",
-            "- Earn {C:attention}$10{}"
+            "- Draw {C:attention}2{} cards",
+            "- Earn {C:attention}$5{}"
         }
     }
 
