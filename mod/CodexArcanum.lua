@@ -70,19 +70,19 @@ function SMODS.INIT.CodexArcanum()
 
 	CodexArcanum.mod = SMODS.findModByID(CodexArcanum.mod_id)
 
-  NFS.load(CodexArcanum.mod.path.."api/TagAPI.lua")()
-  NFS.load(CodexArcanum.mod.path.."api/BoosterPackRegister.lua")()
-  NFS.load(CodexArcanum.mod.path.."api/AlchemicalAPI.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."api/TagAPI.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."api/BoosterPackRegister.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."api/AlchemicalAPI.lua")()
 
-  NFS.load(CodexArcanum.mod.path.."utils/CA_AlchemyUI.lua")()
-  NFS.load(CodexArcanum.mod.path.."utils/CA_CardUtil.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."utils/CA_AlchemyUI.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."utils/CA_CardUtil.lua")()
   
-  NFS.load(CodexArcanum.mod.path.."CA_Overrides.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."CA_Overrides.lua")()
 
-  NFS.load(CodexArcanum.mod.path.."data/CA_Jokers.lua")()
-  NFS.load(CodexArcanum.mod.path.."data/CA_Alchemicals.lua")()
-  NFS.load(CodexArcanum.mod.path.."data/CA_BoosterPacks.lua")()
-  NFS.load(CodexArcanum.mod.path.."data/CA_Others.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."data/CA_Jokers.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."data/CA_Alchemicals.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."data/CA_BoosterPacks.lua")()
+  SMODS.load_file(CodexArcanum.mod.path.."data/CA_Others.lua")()
 
 
   for _, v in pairs(CodexArcanum.INIT) do
